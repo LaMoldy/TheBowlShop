@@ -22,6 +22,8 @@ type DatabaseConfig struct {
 	Name     string `yaml:"name"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
+	SSLMode  string `yaml:"sslmode"`
+	Timezone string `yaml:"timezone"`
 }
 
 // Loads the config file

@@ -1,16 +1,32 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/LaMoldy/TheBowlShop/internal/database/models"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
 
-func testEndpoint(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "success",
-	})
+func getAllUsers(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var users []models.User
+		db.First(&users)
+		c.JSON(200, users)
+	}
 }
 
-func LoadGetEndpoints(router *gin.Engine) {
-	endpointGroup := router.Group("/api")
+func getUserByEmail(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var user models.User
+		email := c.Param("email")
+		db.Model(models.User{Email: email}).First(&user)
+		c.JSON(200, user)
+	}
+}
+
+func LoadGetEndpoints(router *gin.Engine, database *gorm.DB) {
+	endpointGroup := router.Group("/api/get")
 	{
-		endpointGroup.GET("/test", testEndpoint)
+		endpointGroup.GET("/users", getAllUsers(database))
+		endpointGroup.GET("/user/:email", getUserByEmail(database))
 	}
 }

@@ -3,10 +3,11 @@ package api
 import (
 	"github.com/LaMoldy/TheBowlShop/api/routes"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // Creates an api
-func CreateApi() (*gin.Engine, error) {
+func CreateApi(database *gorm.DB) (*gin.Engine, error) {
 	// Create router
 	router := gin.New()
 
@@ -18,7 +19,7 @@ func CreateApi() (*gin.Engine, error) {
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 
 	// Load the routes
-	routes.LoadGetEndpoints(router)
+	routes.LoadGetEndpoints(router, database)
 
 	return router, nil
 }
