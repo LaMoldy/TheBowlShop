@@ -31,7 +31,13 @@ func CreateDatabaseConnection(config *c.Config) (*gorm.DB, error) {
 	}
 
 	// Migrate database models
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(
+		&models.User{},
+		&models.Cart{},
+		&models.Comment{},
+		&models.Product{},
+		&models.Rating{},
+	)
 
 	return db, nil
 }
